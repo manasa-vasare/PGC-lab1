@@ -7,16 +7,15 @@ os.makedirs('images', exist_ok=True)
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = ['Segoe UI', 'Arial']
 
-models = ['Sequential CPU\n(Single-Threaded)', 'MPI Cluster\n(4 VM Nodes)', 'OpenMP\n(8 CPU Threads)', 'CUDA Acceleration\n(NVIDIA GPU)']
-# Reversing the order so CUDA is at the top
+models = ['Sequential CPU\n(Single-Threaded)', 'OpenMP\n(8 CPU Threads)']
 models.reverse()
-times = [321.28, 92.98, 104.49, 0.165]
+times = [321.28, 104.49]
 times.reverse()
-speedups = [1.0, 3.46, 3.07, 1947.15]
+speedups = [1.0, 3.07]
 speedups.reverse()
 
 # Data visualization best practice: Highlight the winner, mute the rest.
-colors = ['#10B981', '#94A3B8', '#94A3B8', '#94A3B8'] # CUDA is green, rest are grey
+colors = ['#10B981', '#94A3B8']
 
 # 1. Combined Performance Chart
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6.5), facecolor='#FFFFFF')
