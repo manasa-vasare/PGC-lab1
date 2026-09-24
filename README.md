@@ -180,13 +180,13 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 #### Execution Time & Speedup Comparison Graphs
 
-![Performance Comparison Charts](images/performance_comparison_charts.png)
+![Performance Comparison Charts](images/performance_comparison_charts.png?v=2)
 
 #### Standalone Execution Time Chart
-![Execution Time Chart](images/execution_time_chart.png)
+![Execution Time Chart](images/execution_time_chart.png?v=2)
 
 #### Standalone Speedup Factor Chart
-![Speedup Chart](images/speedup_chart.png)
+![Speedup Chart](images/speedup_chart.png?v=2)
 
 ### Performance Metric Formulas
 $$\text{Speedup} = \frac{T_{\text{Sequential}}}{T_{\text{Parallel}}}$$
