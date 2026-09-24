@@ -13,7 +13,7 @@ times = [244.12, 92.98, 30.83, 0.165]
 speedups = [1.0, 2.63, 7.92, 1479.48]
 
 # Distinct modern color palette & hatching patterns
-colors = ['#6C5CE7', '#0984E3', '#FD79A8', '#00B894']
+colors = ['#E63946', '#F4A261', '#457B9D', '#2A9D8F']
 hatches = ['///', '\\\\\\', '...', '***']
 
 # 1. Combined Performance Chart
