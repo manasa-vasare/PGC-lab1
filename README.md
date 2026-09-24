@@ -128,11 +128,11 @@ Execution completed in <b>380.87 seconds</b> with correct verification $C[0][0] 
 </details>
 
 <details>
-<summary><b>2. OpenMP Shared Memory Thread Scaling</b></summary>
+<summary><b>2. OpenMP Shared Memory Execution</b></summary>
 <br/>
-OpenMP utilized 8 active CPU threads, achieving 100% CPU core utilization across cores as monitored in `htop`. Execution time dropped to <b>30.83 seconds</b>.
+OpenMP utilized 8 active CPU threads to distribute the workload.
 
-![OpenMP htop Execution](images/openmp_htop.png)
+![OpenMP Execution Result](images/openmp_result.png)
 </details>
 
 <details>
