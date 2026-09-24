@@ -10,9 +10,9 @@ plt.rcParams['font.sans-serif'] = ['Segoe UI', 'Arial']
 models = ['Sequential CPU\n(Single-Threaded)', 'MPI Cluster\n(4 VM Nodes)', 'OpenMP\n(8 CPU Threads)', 'CUDA Acceleration\n(NVIDIA GPU)']
 # Reversing the order so CUDA is at the top
 models.reverse()
-times = [244.12, 92.98, 30.83, 0.165]
+times = [321.28, 92.98, 104.49, 0.165]
 times.reverse()
-speedups = [1.0, 2.63, 7.92, 1479.48]
+speedups = [1.0, 3.46, 3.07, 1947.15]
 speedups.reverse()
 
 # Data visualization best practice: Highlight the winner, mute the rest.

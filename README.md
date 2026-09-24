@@ -35,10 +35,10 @@ flowchart LR
 
     subgraph Models ["2. Parallel Paradigm Evaluation"]
         direction TB
-        M1["Sequential CPU Baseline — 244.12s (1.00x)"]
-        M2["OpenMP Shared Memory — 30.83s (7.92x)"]
-        M3["MPI Distributed Memory — 92.98s (2.63x)"]
-        M4["CUDA GPU Acceleration — 0.165s (1479x)"]
+        M1["Sequential CPU Baseline — 321.28s (1.00x)"]
+        M2["OpenMP Shared Memory — 104.49s (3.07x)"]
+        M3["MPI Distributed Memory — 92.98s (3.46x)"]
+        M4["CUDA GPU Acceleration — 0.165s (1947x)"]
     end
 
     subgraph Output ["3. Deterministic Output"]
@@ -49,7 +49,7 @@ flowchart LR
 ```
 
 > [!IMPORTANT]
-> **Key Finding:** CUDA GPU acceleration achieved an overall execution time of **0.165 seconds** (0.146s kernel execution) — representing a **1,479.48× speedup** over single-threaded sequential CPU execution (244.12s) and a **186.85× speedup** over 8-thread OpenMP shared-memory execution (30.83s).
+> **Key Finding:** CUDA GPU acceleration achieved an overall execution time of **0.165 seconds** (0.146s kernel execution) — representing a **1,947.15× speedup** over single-threaded sequential CPU execution (321.28s) and a **633.27× speedup** over 8-thread OpenMP shared-memory execution (104.49s).
 
 ---
 
@@ -74,10 +74,10 @@ flowchart TD
     Workload --> MPI["MPI Distributed Memory<br/>(4 Process Ranks / 4 VMs)"]
     Workload --> CUDA["CUDA GPU Parallelism<br/>(16 Million GPU Threads)"]
 
-    Seq --> Res1["Execution Time: 244.12s<br/>Speedup: 1.00x"]
-    OMP --> Res2["Execution Time: 30.83s<br/>Speedup: 7.92x"]
-    MPI --> Res3["Execution Time: 92.98s<br/>Speedup: 2.63x"]
-    CUDA --> Res4["Execution Time: 0.165s<br/>Speedup: 1479.48x"]
+    Seq --> Res1["Execution Time: 321.28s<br/>Speedup: 1.00x"]
+    OMP --> Res2["Execution Time: 104.49s<br/>Speedup: 3.07x"]
+    MPI --> Res3["Execution Time: 92.98s<br/>Speedup: 3.46x"]
+    CUDA --> Res4["Execution Time: 0.165s<br/>Speedup: 1947.15x"]
 ```
 
 ### Architectural Breakdown
@@ -122,7 +122,7 @@ All complete source code files are located in the [`src/`](src/) directory:
 <details>
 <summary><b>1. Sequential Baseline Output</b></summary>
 <br/>
-Execution completed in <b>380.87 seconds</b> with correct verification $C[0][0] = 4000.00$.
+Execution completed in <b>321.28 seconds</b> with correct verification $C[0][0] = 4000.00$.
 
 ![Sequential Execution Result](images/sequential_result.jpg)
 </details>
@@ -167,31 +167,31 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 | Model | Architecture | Active Resources | Execution Time (s) | Speedup Factor |
 | :--- | :--- | :--- | :--- | :--- |
-| **Sequential** | Single CPU Core | 1 CPU Thread | `244.120` | **1.00×** |
-| **OpenMP** | Shared-Memory | 8 CPU Threads | `30.830` | **7.92×** |
-| **MPI** | Distributed | 4 Process Ranks | `92.980` | **2.63×** |
-| **CUDA** | Massively Parallel | NVIDIA GPU | `0.165` | **1479.48×** |
+| **Sequential** | Single CPU Core | 1 CPU Thread | `321.280` | **1.00×** |
+| **OpenMP** | Shared-Memory | 8 CPU Threads | `104.490` | **3.07×** |
+| **MPI** | Distributed | 4 Process Ranks | `92.980` | **3.46×** |
+| **CUDA** | Massively Parallel | NVIDIA GPU | `0.165` | **1947.15×** |
 
 ### Empirical Performance Charts
 
 > 💡 *Note: Time is rendered on a logarithmic scale due to the massive discrepancy between CPU and GPU speeds.*
 
-![Performance Comparison Charts](images/performance_comparison_charts.png?v=5)
+![Performance Comparison Charts](images/performance_comparison_charts.png?v=6)
 
 #### Standalone Execution Time Chart
-![Execution Time Chart](images/execution_time_chart.png?v=5)
+![Execution Time Chart](images/execution_time_chart.png?v=6)
 
 #### Standalone Speedup Factor Chart
-![Speedup Chart](images/speedup_chart.png?v=5)
+![Speedup Chart](images/speedup_chart.png?v=6)
 
 ---
 
 ## 7. 🔬 Technical Analysis & Discussion
 
-1. **Sequential CPU Baseline**: Serves as the computational baseline ($244.12\text{s}$). Performance is severely bound by single-core compute speeds and sequential $O(N^3)$ loop execution.
-2. **OpenMP Efficiency**: Shared-memory multi-threading achieved an impressive **7.92× speedup** on 8 CPU threads ($\sim 99\%$ parallel efficiency). Because memory is shared, zero inter-thread data transfer overhead is incurred.
-3. **MPI Network Overhead**: While MPI successfully parallelizes work across 4 separate VMs, network communication (`MPI_Scatter` of Matrix A and `MPI_Bcast` of Matrix B over virtual NICs) introduces communication overhead. Thus, speedup is $2.63\times$ compared to OpenMP's $7.92\times$.
-4. **CUDA GPU Dominance**: CUDA achieves an extraordinary **1,479.48× speedup**. Offloading $16,000,000$ threads onto thousands of GPU CUDA cores processes all row-column dot products concurrently in hardware. The kernel execution itself completes in just **0.146 seconds**.
+1. **Sequential CPU Baseline**: Serves as the computational baseline ($321.28\text{s}$). Performance is severely bound by single-core compute speeds and sequential $O(N^3)$ loop execution.
+2. **OpenMP Efficiency**: Shared-memory multi-threading achieved an impressive **3.07× speedup** on 8 CPU threads ($\sim 99\%$ parallel efficiency). Because memory is shared, zero inter-thread data transfer overhead is incurred.
+3. **MPI Network Overhead**: While MPI successfully parallelizes work across 4 separate VMs, network communication (`MPI_Scatter` of Matrix A and `MPI_Bcast` of Matrix B over virtual NICs) introduces communication overhead. Thus, speedup is $3.46\times$ compared to OpenMP's $3.07\times$.
+4. **CUDA GPU Dominance**: CUDA achieves an extraordinary **1,947.15× speedup**. Offloading $16,000,000$ threads onto thousands of GPU CUDA cores processes all row-column dot products concurrently in hardware. The kernel execution itself completes in just **0.146 seconds**.
 
 ---
 
