@@ -107,11 +107,11 @@ All complete source code files are located in the [`src/`](src/) directory:
 
 | Computing Paradigm | Source File Link | Description / Implementation Highlights |
 | :--- | :--- | :--- |
-| **Sequential CPU** | [`src/sequential/matrix_sequential.c`](src/sequential/matrix_sequential.c) | Baseline $O(N^3)$ triple-nested loop implementation in C |
-| **OpenMP** | [`src/openmp/matrix_openmp.c`](src/openmp/matrix_openmp.c) | `#pragma omp parallel for private(j, k)` shared-memory threading |
-| **MPI Distributed** | [`src/mpi/matrix_mpi.c`](src/mpi/matrix_mpi.c) | `MPI_Scatter`, `MPI_Bcast`, and `MPI_Gather` distributed execution |
-| **MPI Test** | [`src/mpi/mpi_send_recv.c`](src/mpi/mpi_send_recv.c) | Point-to-point `MPI_Send` and `MPI_Recv` communication test |
-| **CUDA GPU** | [`src/cuda/matrix_cuda.cu`](src/cuda/matrix_cuda.cu) | CUDA kernel `matMulKernel<<<grid, block>>>` with 16 million threads |
+| **Sequential CPU** | [`src/sequential/seqmatrix.c`](src/sequential/seqmatrix.c) | Baseline $O(N^3)$ triple-nested loop implementation in C |
+| **OpenMP** | [`src/openmp/openmpmatrix.c`](src/openmp/openmpmatrix.c) | `#pragma omp parallel for private(j, k)` shared-memory threading |
+| **MPI Distributed** | [`src/mpi/mpimatrix.c`](src/mpi/mpimatrix.c) | `MPI_Scatter`, `MPI_Bcast`, and `MPI_Gather` distributed execution |
+| **MPI Test** | [`src/mpi/sendandreceive.c`](src/mpi/sendandreceive.c) | Point-to-point `MPI_Send` and `MPI_Recv` communication test |
+| **CUDA GPU** | [`src/cuda/cudamatrix.c`](src/cuda/cudamatrix.c) | CUDA kernel `matMulKernel<<<grid, block>>>` with 16 million threads |
 
 ---
 
