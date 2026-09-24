@@ -4,118 +4,104 @@ import numpy as np
 
 os.makedirs('images', exist_ok=True)
 
-# Custom typography & theme settings
 plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Segoe UI', 'Arial']
-plt.rcParams['text.color'] = '#C9D1D9'
-plt.rcParams['axes.labelcolor'] = '#C9D1D9'
-plt.rcParams['xtick.color'] = '#C9D1D9'
-plt.rcParams['ytick.color'] = '#C9D1D9'
+plt.rcParams['font.sans-serif'] = ['Segoe UI', 'Arial']
 
 models = ['Sequential CPU\n(Single-Threaded)', 'MPI Cluster\n(4 VM Nodes)', 'OpenMP\n(8 CPU Threads)', 'CUDA Acceleration\n(NVIDIA GPU)']
+# Reversing the order so CUDA is at the top
+models.reverse()
 times = [244.12, 92.98, 30.83, 0.165]
+times.reverse()
 speedups = [1.0, 2.63, 7.92, 1479.48]
+speedups.reverse()
 
-# Distinct modern color palette (Dark Mode friendly)
-colors = ['#FF7B72', '#FFA657', '#79C0FF', '#3FB950']
-
-BG_COLOR = '#0D1117' # GitHub Dark dimension
-GRID_COLOR = '#30363D'
+# Data visualization best practice: Highlight the winner, mute the rest.
+colors = ['#10B981', '#94A3B8', '#94A3B8', '#94A3B8'] # CUDA is green, rest are grey
 
 # 1. Combined Performance Chart
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6.5), facecolor=BG_COLOR)
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6.5), facecolor='#FFFFFF')
 
-bars1 = ax1.bar(models, times, color=colors, width=0.52, edgecolor=BG_COLOR, linewidth=1.5)
+bars1 = ax1.barh(models, times, color=colors, height=0.55, edgecolor='#0F172A', linewidth=1)
 
-ax1.set_yscale('log')
-ax1.set_title('Benchmark Execution Time (Log Scale)', fontsize=14, fontweight='bold', color='#FFFFFF', pad=15)
-ax1.set_ylabel('Execution Time in Seconds (Lower is Better)', fontsize=11, fontweight='bold')
-ax1.grid(True, which='both', linestyle='--', color=GRID_COLOR, alpha=0.7)
-ax1.set_facecolor(BG_COLOR)
+ax1.set_xscale('log')
+ax1.set_title('Benchmark Execution Time', fontsize=14, fontweight='bold', color='#0F172A', pad=15)
+ax1.set_xlabel('Execution Time (Seconds) - Log Scale', fontsize=11, fontweight='bold', color='#475569')
+ax1.grid(True, axis='x', linestyle='--', color='#E2E8F0', alpha=0.9)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
-ax1.spines['bottom'].set_color(GRID_COLOR)
-ax1.spines['left'].set_color(GRID_COLOR)
+ax1.spines['left'].set_visible(False)
+ax1.tick_params(axis='y', length=0)
 
 for bar, time in zip(bars1, times):
-    yval = bar.get_height()
+    width = bar.get_width()
     label = f'{time:.2f} s' if time >= 1 else f'{time:.3f} s'
-    ax1.text(bar.get_x() + bar.get_width()/2.0, yval * 1.4, label, 
-             ha='center', va='bottom', fontsize=10.5, fontweight='bold', color='#FFFFFF',
-             bbox=dict(boxstyle='round,pad=0.3', fc='#21262D', ec=GRID_COLOR, lw=1))
+    ax1.text(width * 1.15, bar.get_y() + bar.get_height()/2.0, label, 
+             ha='left', va='center', fontsize=11, fontweight='bold', color='#0F172A')
 
-bars2 = ax2.bar(models, speedups, color=colors, width=0.52, edgecolor=BG_COLOR, linewidth=1.5)
+bars2 = ax2.barh(models, speedups, color=colors, height=0.55, edgecolor='#0F172A', linewidth=1)
 
-ax2.set_yscale('log')
-ax2.set_title('Parallel Speedup Factor (Log Scale)', fontsize=14, fontweight='bold', color='#FFFFFF', pad=15)
-ax2.set_ylabel('Speedup Ratio vs. Sequential (Higher is Better)', fontsize=11, fontweight='bold')
-ax2.grid(True, which='both', linestyle='--', color=GRID_COLOR, alpha=0.7)
-ax2.set_facecolor(BG_COLOR)
+ax2.set_xscale('log')
+ax2.set_title('Parallel Speedup Factor', fontsize=14, fontweight='bold', color='#0F172A', pad=15)
+ax2.set_xlabel('Speedup vs. Sequential - Log Scale', fontsize=11, fontweight='bold', color='#475569')
+ax2.grid(True, axis='x', linestyle='--', color='#E2E8F0', alpha=0.9)
 ax2.spines['top'].set_visible(False)
 ax2.spines['right'].set_visible(False)
-ax2.spines['bottom'].set_color(GRID_COLOR)
-ax2.spines['left'].set_color(GRID_COLOR)
+ax2.spines['left'].set_visible(False)
+ax2.tick_params(axis='y', length=0)
 
 for bar, speedup in zip(bars2, speedups):
-    yval = bar.get_height()
+    width = bar.get_width()
     label = f'{speedup:.2f}x'
-    ax2.text(bar.get_x() + bar.get_width()/2.0, yval * 1.4, label, 
-             ha='center', va='bottom', fontsize=10.5, fontweight='bold', color='#FFFFFF',
-             bbox=dict(boxstyle='round,pad=0.3', fc='#21262D', ec=GRID_COLOR, lw=1))
+    ax2.text(width * 1.15, bar.get_y() + bar.get_height()/2.0, label, 
+             ha='left', va='center', fontsize=11, fontweight='bold', color='#0F172A')
 
-plt.suptitle('Parallel & GPU Computing Lab — Experiment 1 Performance Analysis', fontsize=16, fontweight='bold', color='#FFFFFF', y=1.02)
+plt.suptitle('Performance Analysis: Matrix Multiplication (4000x4000)', fontsize=16, fontweight='bold', color='#0F172A', y=1.05)
 plt.tight_layout()
-plt.savefig('images/performance_comparison_charts.png', dpi=300, bbox_inches='tight', facecolor=BG_COLOR)
+plt.savefig('images/performance_comparison_charts.png', dpi=300, bbox_inches='tight', facecolor='#FFFFFF')
 plt.close()
 
 # 2. Standalone Execution Time Chart
-fig, ax = plt.subplots(figsize=(9.5, 6), facecolor=BG_COLOR)
-bars = ax.bar(models, times, color=colors, width=0.5, edgecolor=BG_COLOR, linewidth=1.5)
+fig, ax = plt.subplots(figsize=(10, 5), facecolor='#FFFFFF')
+bars = ax.barh(models, times, color=colors, height=0.55, edgecolor='#0F172A', linewidth=1)
 
-ax.set_yscale('log')
-ax.set_title('Matrix Multiplication (4000x4000) Execution Time Comparison', fontsize=14, fontweight='bold', color='#FFFFFF', pad=15)
-ax.set_ylabel('Execution Time (Seconds, Log Scale)', fontsize=12, fontweight='bold')
-ax.grid(True, which='both', linestyle='--', color=GRID_COLOR, alpha=0.7)
-ax.set_facecolor(BG_COLOR)
+ax.set_xscale('log')
+ax.set_title('Matrix Multiplication (4000x4000) Execution Time Comparison', fontsize=14, fontweight='bold', color='#0F172A', pad=15)
+ax.set_xlabel('Execution Time (Seconds) - Log Scale', fontsize=11, fontweight='bold', color='#475569')
+ax.grid(True, axis='x', linestyle='--', color='#E2E8F0', alpha=0.9)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
-ax.spines['bottom'].set_color(GRID_COLOR)
-ax.spines['left'].set_color(GRID_COLOR)
+ax.spines['left'].set_visible(False)
+ax.tick_params(axis='y', length=0)
 
 for bar, time in zip(bars, times):
-    yval = bar.get_height()
+    width = bar.get_width()
     label = f'{time:.2f} s' if time >= 1 else f'{time:.3f} s'
-    ax.text(bar.get_x() + bar.get_width()/2.0, yval * 1.35, label, 
-            ha='center', va='bottom', fontsize=11, fontweight='bold', color='#FFFFFF',
-            bbox=dict(boxstyle='round,pad=0.3', fc='#21262D', ec=GRID_COLOR, lw=1))
+    ax.text(width * 1.15, bar.get_y() + bar.get_height()/2.0, label, 
+            ha='left', va='center', fontsize=11, fontweight='bold', color='#0F172A')
 
 plt.tight_layout()
-plt.savefig('images/execution_time_chart.png', dpi=300, bbox_inches='tight', facecolor=BG_COLOR)
+plt.savefig('images/execution_time_chart.png', dpi=300, bbox_inches='tight', facecolor='#FFFFFF')
 plt.close()
 
 # 3. Standalone Speedup Chart
-fig, ax = plt.subplots(figsize=(9.5, 6), facecolor=BG_COLOR)
-bars = ax.bar(models, speedups, color=colors, width=0.5, edgecolor=BG_COLOR, linewidth=1.5)
+fig, ax = plt.subplots(figsize=(10, 5), facecolor='#FFFFFF')
+bars = ax.barh(models, speedups, color=colors, height=0.55, edgecolor='#0F172A', linewidth=1)
 
-ax.set_yscale('log')
-ax.set_title('Parallel Speedup Factor relative to Sequential Baseline', fontsize=14, fontweight='bold', color='#FFFFFF', pad=15)
-ax.set_ylabel('Speedup Factor (x, Log Scale)', fontsize=12, fontweight='bold')
-ax.grid(True, which='both', linestyle='--', color=GRID_COLOR, alpha=0.7)
-ax.set_facecolor(BG_COLOR)
+ax.set_xscale('log')
+ax.set_title('Parallel Speedup Factor relative to Sequential Baseline', fontsize=14, fontweight='bold', color='#0F172A', pad=15)
+ax.set_xlabel('Speedup Factor (x) - Log Scale', fontsize=11, fontweight='bold', color='#475569')
+ax.grid(True, axis='x', linestyle='--', color='#E2E8F0', alpha=0.9)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
-ax.spines['bottom'].set_color(GRID_COLOR)
-ax.spines['left'].set_color(GRID_COLOR)
+ax.spines['left'].set_visible(False)
+ax.tick_params(axis='y', length=0)
 
 for bar, speedup in zip(bars, speedups):
-    yval = bar.get_height()
+    width = bar.get_width()
     label = f'{speedup:.2f}x'
-    ax.text(bar.get_x() + bar.get_width()/2.0, yval * 1.35, label, 
-            ha='center', va='bottom', fontsize=11, fontweight='bold', color='#FFFFFF',
-            bbox=dict(boxstyle='round,pad=0.3', fc='#21262D', ec=GRID_COLOR, lw=1))
+    ax.text(width * 1.15, bar.get_y() + bar.get_height()/2.0, label, 
+            ha='left', va='center', fontsize=11, fontweight='bold', color='#0F172A')
 
 plt.tight_layout()
-plt.savefig('images/speedup_chart.png', dpi=300, bbox_inches='tight', facecolor=BG_COLOR)
+plt.savefig('images/speedup_chart.png', dpi=300, bbox_inches='tight', facecolor='#FFFFFF')
 plt.close()
-
-print('Charts regenerated successfully with GitHub Dark Mode styling.')
