@@ -124,7 +124,7 @@ All complete source code files are located in the [`src/`](src/) directory:
 <br/>
 Execution completed in <b>380.87 seconds</b> with correct verification $C[0][0] = 4000.00$.
 
-![Sequential Execution Result](images/sequential_result.png)
+![Sequential Execution Result](images/sequential_result.jpg)
 </details>
 
 <details>
