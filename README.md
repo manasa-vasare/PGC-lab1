@@ -132,7 +132,7 @@ Execution completed in <b>321.28 seconds</b> with correct verification $C[0][0] 
 <br/>
 OpenMP utilized 8 active CPU threads to distribute the workload.
 
-![OpenMP Execution Result](images/openmp_result.png)
+![OpenMP Execution Result](images/openmp_result.png?bust=1)
 </details>
 
 <details>
@@ -176,13 +176,13 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 > 💡 *Note: Time is rendered on a logarithmic scale due to the massive discrepancy between CPU and GPU speeds.*
 
-![Performance Comparison Charts](images/performance_comparison_charts.png?v=6)
+![Performance Comparison Charts](images/performance_comparison_charts.png?bust=20260925v2)
 
 #### Standalone Execution Time Chart
-![Execution Time Chart](images/execution_time_chart.png?v=6)
+![Execution Time Chart](images/execution_time_chart.png?bust=20260925v2)
 
 #### Standalone Speedup Factor Chart
-![Speedup Chart](images/speedup_chart.png?v=6)
+![Speedup Chart](images/speedup_chart.png?bust=20260925v2)
 
 ---
 
