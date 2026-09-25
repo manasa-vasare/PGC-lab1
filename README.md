@@ -16,7 +16,6 @@
 6. [Empirical Results & Screenshots](#5--empirical-results--screenshots)
 7. [Performance Comparison & Visualizations](#6--performance-comparison--visualizations)
 8. [Technical Analysis & Discussion](#7--technical-analysis--discussion)
-9. [Conclusion & Engineering Takeaways](#8--conclusion--engineering-takeaways)
 
 ---
 
