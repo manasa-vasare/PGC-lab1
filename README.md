@@ -174,15 +174,13 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 ### Empirical Performance Charts
 
-> 💡 *Note: Time is rendered on a logarithmic scale due to the massive discrepancy between CPU and GPU speeds.*
-
-![Performance Comparison Charts](images/performance_comparison_charts.png?bust=pending_v1)
+![Performance Comparison Charts](images/performance_comparison_charts.png?bust=linear_v1)
 
 #### Standalone Execution Time Chart
-![Execution Time Chart](images/execution_time_chart.png?bust=pending_v1)
+![Execution Time Chart](images/execution_time_chart.png?bust=linear_v1)
 
 #### Standalone Speedup Factor Chart
-![Speedup Chart](images/speedup_chart.png?bust=pending_v1)
+![Speedup Chart](images/speedup_chart.png?bust=linear_v1)
 
 ---
 
