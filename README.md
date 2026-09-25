@@ -1,4 +1,4 @@
-# 🚀 Performance Analysis of Matrix Multiplication
+#  Performance Analysis of Matrix Multiplication
 
 [![Course](https://img.shields.io/badge/Course-Parallel%20%26%20GPU%20Computing-blue.svg)](#)
 [![Workload](https://img.shields.io/badge/Workload-4000x4000%20Matrix%20Multiplication-orange.svg)](#)
@@ -9,7 +9,7 @@
 
 ---
 
-## 📑 Table of Contents
+##  Table of Contents
 
 1. [Executive Summary](#-executive-summary)
 2. [Experiment Objectives](#1--experiment-objectives)
@@ -23,7 +23,7 @@
 
 ---
 
-## ⚡ Executive Summary
+##  Executive Summary
 
 This repository contains the empirical performance analysis, parallel execution models, and benchmark results for a **$4000 \times 4000$ Matrix Multiplication** ($C = A \times B$) across four computing paradigms: Sequential, OpenMP, MPI, and CUDA.
 
@@ -53,7 +53,7 @@ flowchart LR
 
 ---
 
-## 1. 🎯 Experiment Objectives
+## 1.  Experiment Objectives
 
 - **Multi-Model Parallelization**: Implement a uniform $4000 \times 4000$ matrix multiplication workload across four fundamental parallel paradigms: Sequential, OpenMP, MPI, and CUDA.
 - **Correctness Verification**: Enforce identical input matrix initializations ($A_{ij} = 1.0, B_{ij} = 1.0$) across all implementations to verify deterministic correctness ($C[0][0] = 4000.00$).
@@ -62,7 +62,7 @@ flowchart LR
 
 ---
 
-## 2. 🏛️ Theoretical & Architectural Comparison
+## 2.  Theoretical & Architectural Comparison
 
 ```mermaid
 flowchart TD
@@ -91,7 +91,7 @@ flowchart TD
 
 ---
 
-## 3. ⚙️ Workload Specification
+## 3.  Workload Specification
 
 - **Matrix Dimension ($N$)**: $4000 \times 4000$
 - **Input Matrix $A$ & $B$**: $A[i][j] = 1.0, B[i][j] = 1.0$ for all $i, j$
@@ -101,7 +101,7 @@ flowchart TD
 
 ---
 
-## 4. 💻 Source Code References
+## 4.  Source Code References
 
 All complete source code files are located in the [`src/`](src/) directory:
 
@@ -115,7 +115,7 @@ All complete source code files are located in the [`src/`](src/) directory:
 
 ---
 
-## 5. 📸 Empirical Results & Screenshots
+## 5.  Empirical Results & Screenshots
 
 *(Click to expand and view execution screenshots)*
 
@@ -161,7 +161,7 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 ---
 
-## 6. 📊 Performance Comparison & Visualizations
+## 6.  Performance Comparison & Visualizations
 
 ### Performance Comparison Table
 
@@ -184,7 +184,7 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 ---
 
-## 7. 🔬 Technical Analysis & Discussion
+## 7.  Technical Analysis & Discussion
 
 1. **Sequential CPU Baseline**: Serves as the computational baseline ($321.28\text{s}$). Performance is severely bound by single-core compute speeds and sequential $O(N^3)$ loop execution.
 2. **OpenMP Efficiency**: Shared-memory multi-threading achieved an impressive **3.07× speedup** on 8 CPU threads ($\sim 99\%$ parallel efficiency). Because memory is shared, zero inter-thread data transfer overhead is incurred.
@@ -193,7 +193,7 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 ---
 
-## 8. 🎓 Conclusion & Engineering Takeaways
+## 8.  Conclusion & Engineering Takeaways
 
 > [!NOTE]
 > **Deterministic Verification:** All four parallel paradigms successfully produced identical verification outputs ($C[0][0] = 4000.00$), confirming numerical correctness across all computing models before evaluating performance.
