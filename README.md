@@ -37,7 +37,7 @@ flowchart LR
         direction TB
         M1["Sequential CPU Baseline — 321.28s (1.00x)"]
         M2["OpenMP Shared Memory — 104.49s (3.07x)"]
-        M3["MPI Distributed Memory — ⏳ Pending"]
+        M3["MPI Distributed Memory — 226.17s (1.42x)"]
         M4["CUDA GPU Acceleration — ⏳ Pending"]
     end
 
@@ -76,7 +76,7 @@ flowchart TD
 
     Seq --> Res1["Execution Time: 321.28s<br/>Speedup: 1.00x"]
     OMP --> Res2["Execution Time: 104.49s<br/>Speedup: 3.07x"]
-    MPI --> Res3["Execution Time: ⏳ Pending<br/>Speedup: TBD"]
+    MPI --> Res3["Execution Time: 226.17s<br/>Speedup: 1.42x"]
     CUDA --> Res4["Execution Time: ⏳ Pending<br/>Speedup: TBD"]
 ```
 
@@ -140,7 +140,7 @@ OpenMP utilized 8 active CPU threads to distribute the workload.
 <br/>
 Ping test confirming 0% packet loss across the 4 VM cluster (`master`, `worker1`, `worker2`, `worker3`).
 
-![MPI Ping Test](images/mpi_ping.png)
+![MPI Ping Test](images/mpi_ping.jpg)
 </details>
 
 <details>
@@ -148,13 +148,13 @@ Ping test confirming 0% packet loss across the 4 VM cluster (`master`, `worker1`
 <br/>
 Successful point-to-point message passing (`MPI_Send` / `MPI_Recv`) across all 4 MPI ranks.
 
-![MPI Send Recv Verification](images/mpi_send_recv.png)
+![MPI Send Recv Verification](images/mpi_send_recv.jpg)
 </details>
 
 <details>
 <summary><b>5. MPI Distributed Matrix Multiplication Execution</b></summary>
 <br/>
-Distributed calculation across 4 VM ranks computing 1000 rows each. Execution time achieved was <b>92.98 seconds</b>.
+Distributed calculation across 4 VM ranks computing 1000 rows each. Execution time achieved was <b>226.17 seconds</b>.
 
 ![MPI Matrix Multiplication Result](images/mpi_result.png)
 </details>
@@ -169,18 +169,18 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 | :--- | :--- | :--- | :--- | :--- |
 | **Sequential** | Single CPU Core | 1 CPU Thread | `321.280` | **1.00×** |
 | **OpenMP** | Shared-Memory | 8 CPU Threads | `104.490` | **3.07×** |
-| **MPI** | Distributed | 4 Process Ranks | ⏳ TBD | ⏳ TBD |
+| **MPI** | Distributed | 4 Process Ranks | `226.170` | **1.42×** |
 | **CUDA** | Massively Parallel | NVIDIA GPU | ⏳ TBD | ⏳ TBD |
 
 ### Empirical Performance Charts
 
-![Performance Comparison Charts](images/performance_comparison_charts.png?bust=linear_v1)
+![Performance Comparison Charts](images/performance_comparison_charts.png?bust=linear_v2)
 
 #### Standalone Execution Time Chart
-![Execution Time Chart](images/execution_time_chart.png?bust=linear_v1)
+![Execution Time Chart](images/execution_time_chart.png?bust=linear_v2)
 
 #### Standalone Speedup Factor Chart
-![Speedup Chart](images/speedup_chart.png?bust=linear_v1)
+![Speedup Chart](images/speedup_chart.png?bust=linear_v2)
 
 ---
 
@@ -188,7 +188,7 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 1. **Sequential CPU Baseline**: Serves as the computational baseline ($321.28\text{s}$). Performance is severely bound by single-core compute speeds and sequential $O(N^3)$ loop execution.
 2. **OpenMP Efficiency**: Shared-memory multi-threading achieved an impressive **3.07× speedup** on 8 CPU threads ($\sim 99\%$ parallel efficiency). Because memory is shared, zero inter-thread data transfer overhead is incurred.
-3. **MPI Network Overhead**: (⏳ Pending benchmark execution)
+3. **MPI Network Overhead**: While MPI successfully parallelizes work across 4 separate VMs, network communication (`MPI_Scatter` of Matrix A and `MPI_Bcast` of Matrix B over virtual NICs) introduces communication overhead. Thus, speedup is $1.42\times$ compared to OpenMP's $3.07\times$.
 4. **CUDA GPU Dominance**: (⏳ Pending benchmark execution)
 
 ---
