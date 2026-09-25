@@ -1,4 +1,4 @@
-#  Performance Analysis of Matrix Multiplication
+# Performance Analysis of Sequential, OpenMP, MPI, and CUDA
 
 
 
@@ -8,25 +8,32 @@
 
 ##  Table of Contents
 
-1. [Executive Summary](#-executive-summary)
+1. [Executive Summary](#executive-summary)
 2. [Experiment Objectives](#1--experiment-objectives)
-3. [Theoretical & Architectural Comparison](#2-️-theoretical--architectural-comparison)
-4. [Workload Specification](#3-️-workload-specification)
+3. [Theoretical & Architectural Comparison](#2--theoretical--architectural-comparison)
+4. [Workload Specification](#3--workload-specification)
 5. [Source Code References](#4--source-code-references)
 6. [Empirical Results & Screenshots](#5--empirical-results--screenshots)
 7. [Performance Comparison & Visualizations](#6--performance-comparison--visualizations)
 8. [Technical Analysis & Discussion](#7--technical-analysis--discussion)
+9. [Detailed Execution Setup](#8-detailed-execution-setup)
+
+
 
 ---
 
-##  Executive Summary
-
-This repository contains the empirical performance analysis, parallel execution models, and benchmark results for a **$4000 \times 4000$ Matrix Multiplication** ($C = A \times B$) across four computing paradigms: Sequential, OpenMP, MPI, and CUDA.
 
 
+## Executive Summary
 
-> [!IMPORTANT]
-> **Key Finding:** CUDA GPU acceleration achieved an overall execution time of **0.165 seconds** (0.146s kernel execution) — representing a **1,947.15× speedup** over single-threaded sequential CPU execution (321.28s) and a **633.27× speedup** over 8-thread OpenMP shared-memory execution (104.49s).
+This project tests how fast a computer can multiply a large 4000x4000 matrix using four different methods:
+
+1. **Sequential CPU**: Using a single processor core.
+2. **OpenMP**: Using 8 processor cores on a single computer.
+3. **MPI**: Using 4 separate virtual machines connected over a network.
+4. **CUDA**: Using a graphics card (GPU) to do the math.
+
+The main goal is to show how parallel computing reduces execution time compared to a standard sequential program.
 
 ---
 
@@ -41,7 +48,9 @@ This repository contains the empirical performance analysis, parallel execution 
 
 
 
-### 2.Architectural Breakdown
+## 2. Theoretical & Architectural Comparison
+
+### 2.1 Architectural Breakdown
 
 | Paradigm | Execution Model | Memory Space | Description |
 | :--- | :--- | :--- | :--- |
@@ -135,13 +144,13 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 ### Empirical Performance Charts
 
-![Performance Comparison Charts](images/performance_comparison_charts.png?bust=linear_v2)
+![Performance Comparison Charts](images/performance_comparison_charts.png?bust=vertical_v1)
 
 #### Standalone Execution Time Chart
-![Execution Time Chart](images/execution_time_chart.png?bust=linear_v2)
+![Execution Time Chart](images/execution_time_chart.png?bust=vertical_v1)
 
 #### Standalone Speedup Factor Chart
-![Speedup Chart](images/speedup_chart.png?bust=linear_v2)
+![Speedup Chart](images/speedup_chart.png?bust=vertical_v1)
 
 ---
 
@@ -154,3 +163,287 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 ---
 
+## 8. Detailed Execution Setup
+
+Below are the exact execution steps as required by the laboratory manual, grouped by where they need to be executed.
+
+---
+
+### 8.1 Part A - Sequential Matrix Multiplication
+
+#### Prerequisites
+- Windows PowerShell is available.
+- WSL2 is installed and an Ubuntu distribution is available.
+- Internet access is available for package installation inside Ubuntu.
+- The user has permission to run sudo commands in Ubuntu.
+
+#### Location: Windows PowerShell on the Windows host
+
+**1. Open Windows PowerShell**
+Open the Windows Start menu, search for PowerShell, and select Windows PowerShell.
+
+**2. Verify that WSL is installed**
+Run the following command to confirm that WSL is available on the Windows system.
+```bash
+wsl --status
+```
+
+**3. List installed WSL distributions**
+Run the command below to check which Linux distribution is installed.
+```bash
+wsl -l -v
+```
+
+**4. Start Ubuntu from PowerShell**
+Launch the installed Ubuntu distribution from PowerShell.
+```bash
+wsl
+```
+*Expected result:* The terminal prompt changes to the Ubuntu shell (e.g., `user@computer:~$`)
+
+#### Location: Ubuntu terminal inside WSL
+
+**5. Update Ubuntu package information**
+```bash
+sudo apt update
+```
+
+**6. Install GCC and build tools**
+```bash
+sudo apt install build-essential -y
+```
+
+**7. Verify GCC**
+```bash
+gcc --version
+```
+
+**8. Create the sequential experiment directory**
+```bash
+mkdir -p ~/parallel_lab/sequential
+cd ~/parallel_lab/sequential
+```
+
+**9. Create the source file**
+```bash
+nano matrix_sequential.c
+```
+*(Code entered here. Save in nano: press Ctrl + O, press Enter, then press Ctrl + X to exit.)*
+
+**10. Compile the sequential program**
+```bash
+gcc -O2 matrix_sequential.c -o matrix_sequential
+```
+
+**11. Verify the executable**
+```bash
+ls -l
+```
+
+**12. Run the sequential program**
+```bash
+./matrix_sequential
+```
+*Expected result:* The program should report completion, execution time, and C[0][0] = 4000.00.
+
+---
+
+### 8.2 Part B - OpenMP Matrix Multiplication
+
+#### Prerequisites
+- The WSL2 Ubuntu environment from Part A is working.
+- GCC is installed.
+- The WSL environment exposes multiple logical CPUs.
+
+#### Location: Windows PowerShell
+
+**1. Enter WSL Ubuntu**
+```bash
+wsl
+```
+
+#### Location: Ubuntu terminal inside WSL
+
+**2. Check the number of logical CPUs**
+```bash
+nproc
+```
+
+**3. Set OpenMP to 8 threads**
+```bash
+export OMP_NUM_THREADS=8
+```
+
+**4. Verify the thread setting**
+```bash
+echo $OMP_NUM_THREADS
+```
+*Expected result:* Output should be `8`.
+
+**5. Create directory and source file**
+```bash
+mkdir -p ~/parallel_lab/openmp
+cd ~/parallel_lab/openmp
+nano matrix_openmp.c
+```
+
+**6. Compile the OpenMP program**
+```bash
+gcc -O2 -fopenmp matrix_openmp.c -o matrix_openmp
+```
+
+**7. Run the OpenMP program**
+```bash
+./matrix_openmp
+```
+*Expected result:* The output should show the number of threads and the execution time.
+
+**8. Monitor CPU utilization (optional)**
+Run `htop` in another terminal while the OpenMP computation is running to verify all cores are engaged.
+
+---
+
+### 8.3 Part C - MPI Distributed Matrix Multiplication
+
+#### Prerequisites
+- VMware Workstation or an equivalent virtualization platform.
+- Four Ubuntu virtual machines (One Master VM and three Worker VMs).
+- All four VMs connected to the same virtual network.
+
+#### Location: VMware Workstation on the host system
+
+**1. Create the four VMs**
+Create one Ubuntu VM named `master` and three Ubuntu VMs named `worker1`, `worker2` and `worker3`. Connect them to the same VMware virtual network.
+
+#### Location: Every Ubuntu VM (Master + All Workers)
+
+**2. Set unique hostnames**
+Run the hostname command appropriate to the current VM.
+```bash
+sudo hostnamectl set-hostname master
+# On Worker1: sudo hostnamectl set-hostname worker1
+# On Worker2: sudo hostnamectl set-hostname worker2
+# On Worker3: sudo hostnamectl set-hostname worker3
+```
+
+**3. Identify IP addresses**
+```bash
+hostname -I
+```
+
+**4. Install OpenSSH & Open MPI**
+```bash
+sudo apt update
+sudo apt install openssh-server -y
+sudo systemctl enable --now ssh
+sudo apt install openmpi-bin libopenmpi-dev -y
+```
+
+**5. Verify MPI tools**
+```bash
+mpicc --version
+mpirun --version
+```
+
+#### Location: Master VM Only
+
+**6. Test network connectivity**
+From the Master VM, ping each Worker VM to ensure no packet loss.
+```bash
+ping -c 4 192.168.125.129
+ping -c 4 192.168.125.130
+ping -c 4 192.168.125.131
+```
+
+**7. Create an SSH key on Master**
+Generate an SSH key pair for passwordless login.
+```bash
+ssh-keygen -t rsa
+```
+
+**8. Copy the public key to Workers**
+```bash
+ssh-copy-id worker1
+ssh-copy-id worker2
+ssh-copy-id worker3
+```
+
+**9. Test passwordless SSH**
+Check remote hostname access.
+```bash
+ssh worker1 hostname
+ssh worker2 hostname
+ssh worker3 hostname
+```
+
+**10. Create the MPI working directory and hostfile**
+```bash
+mkdir -p ~/parallel_lab/mpi
+cd ~/parallel_lab/mpi
+nano hosts
+```
+*(Enter the host slots in the file:)*
+```text
+master slots=1
+worker1 slots=1
+worker2 slots=1
+worker3 slots=1
+```
+
+**11. Compile the MPI program**
+```bash
+mpicc -O2 matrix_mpi.c -o matrix_mpi
+```
+
+**12. Copy the executable to Workers**
+```bash
+scp matrix_mpi worker1:~/matrix_mpi
+scp matrix_mpi worker2:~/matrix_mpi
+scp matrix_mpi worker3:~/matrix_mpi
+```
+
+**13. Run the MPI program**
+Launch four MPI processes using the hostfile.
+```bash
+mpirun -np 4 --hostfile hosts sh -c '$HOME/matrix_mpi'
+```
+*Expected result:* The output should show ranks computing 1000 rows each and a final verification value of 4000.00.
+
+---
+
+### 8.4 Part D - CUDA Matrix Multiplication
+
+#### Prerequisites
+- NVIDIA CUDA-capable GPU.
+- NVIDIA driver installed and GPU recognized.
+- CUDA Toolkit installed.
+
+#### Location: CUDA-capable terminal
+
+**1. Verify the NVIDIA GPU**
+```bash
+nvidia-smi
+```
+
+**2. Verify the CUDA compiler**
+```bash
+nvcc --version
+```
+
+**3. Create directory and source file**
+```bash
+mkdir -p ~/parallel_lab/cuda
+cd ~/parallel_lab/cuda
+nano matrix_cuda.cu
+```
+
+**4. Compile the CUDA program**
+```bash
+nvcc -O2 matrix_cuda.cu -o matrix_cuda
+```
+
+**5. Run the CUDA program**
+```bash
+./matrix_cuda
+```
+*Expected result:* The program should report the grid size, block size, kernel time, total CUDA phase time and C[0][0] = 4000.00.
