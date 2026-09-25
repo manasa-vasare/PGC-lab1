@@ -155,12 +155,3 @@ Distributed calculation across 4 VM ranks computing 1000 rows each. Execution ti
 
 ---
 
-## 8.  Conclusion & Engineering Takeaways
-
-> [!NOTE]
-> **Deterministic Verification:** All four parallel paradigms successfully produced identical verification outputs ($C[0][0] = 4000.00$), confirming numerical correctness across all computing models before evaluating performance.
-
-- **Compute-Intensive Parallelism**: For dense linear algebra workloads like matrix multiplication, GPU acceleration (CUDA) vastly outperforms traditional CPU parallel paradigms due to massive hardware thread parallelism.
-- **Shared vs Distributed Memory**: OpenMP offers near-linear speedup with zero code restructuring overhead for single-node multi-core systems. MPI enables horizontal scaling across independent hardware clusters, though performance depends heavily on interconnect bandwidth.
-
----
