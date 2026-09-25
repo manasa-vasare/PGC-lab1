@@ -40,25 +40,9 @@ This repository contains the empirical performance analysis, parallel execution 
 
 ---
 
-## 2.  Theoretical & Architectural Comparison
 
-```mermaid
-flowchart TD
-    subgraph Workload ["Matrix Multiplication (4000 x 4000)"]
-    end
 
-    Workload --> Seq["Sequential CPU<br/>(1 Core, Single Thread)"]
-    Workload --> OMP["OpenMP Shared Memory<br/>(8 CPU Threads)"]
-    Workload --> MPI["MPI Distributed Memory<br/>(4 Process Ranks / 4 VMs)"]
-    Workload --> CUDA["CUDA GPU Parallelism<br/>(16 Million GPU Threads)"]
-
-    Seq --> Res1["Execution Time: 321.28s<br/>Speedup: 1.00x"]
-    OMP --> Res2["Execution Time: 104.49s<br/>Speedup: 3.07x"]
-    MPI --> Res3["Execution Time: 226.17s<br/>Speedup: 1.42x"]
-    CUDA --> Res4["Execution Time: ⏳ Pending<br/>Speedup: TBD"]
-```
-
-### Architectural Breakdown
+### 2.Architectural Breakdown
 
 | Paradigm | Execution Model | Memory Space | Description |
 | :--- | :--- | :--- | :--- |
