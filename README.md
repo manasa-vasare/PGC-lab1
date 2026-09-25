@@ -24,26 +24,7 @@
 
 This repository contains the empirical performance analysis, parallel execution models, and benchmark results for a **$4000 \times 4000$ Matrix Multiplication** ($C = A \times B$) across four computing paradigms: Sequential, OpenMP, MPI, and CUDA.
 
-```mermaid
-flowchart LR
-    subgraph Input ["1. Workload Input"]
-        IN["4000 x 4000 Matrices A & B<br/>All elements = 1.0"]
-    end
 
-    subgraph Models ["2. Parallel Paradigm Evaluation"]
-        direction TB
-        M1["Sequential CPU Baseline — 321.28s (1.00x)"]
-        M2["OpenMP Shared Memory — 104.49s (3.07x)"]
-        M3["MPI Distributed Memory — 226.17s (1.42x)"]
-        M4["CUDA GPU Acceleration — ⏳ Pending"]
-    end
-
-    subgraph Output ["3. Deterministic Output"]
-        OUT["Verification Result<br/>C[0][0] = 4000.00"]
-    end
-
-    Input --> Models --> Output
-```
 
 > [!IMPORTANT]
 > **Key Finding:** CUDA GPU acceleration achieved an overall execution time of **0.165 seconds** (0.146s kernel execution) — representing a **1,947.15× speedup** over single-threaded sequential CPU execution (321.28s) and a **633.27× speedup** over 8-thread OpenMP shared-memory execution (104.49s).
